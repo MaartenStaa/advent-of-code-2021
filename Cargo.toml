@@ -2,4 +2,5 @@
 members = [
     "day1-sonar-sweep",
     "day2-dive",
+    "day3-binary-diagnostic",
 ]

@@ -9,3 +9,7 @@ version = "0.1.0"
 [[package]]
 name = "day2-dive"
 version = "0.1.0"
+
+[[package]]
+name = "day3-binary-diagnostic"
+version = "0.1.0"
