@@ -13,3 +13,7 @@ version = "0.1.0"
 [[package]]
 name = "day3-binary-diagnostic"
 version = "0.1.0"
+
+[[package]]
+name = "day4-giant-squid"
+version = "0.1.0"
