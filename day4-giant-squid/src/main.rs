@@ -1,9 +1,15 @@
 fn main() {
     let (numbers, boards) = parse_input(include_str!("input.txt"));
-    let (winning_number, winner) = pick_winner(&numbers, boards);
 
+    let (winning_number, winner) = pick_winner(&numbers, boards.clone());
     println!(
-        "{:?}",
+        "Part 1: {:?}",
+        winner.map(|winner| winner.get_score(winning_number))
+    );
+
+    let (winning_number, winner) = pick_last_winner(&numbers, boards);
+    println!(
+        "Part 2: {:?}",
         winner.map(|winner| winner.get_score(winning_number))
     );
 }
@@ -100,6 +106,32 @@ fn pick_winner(numbers: &[u8], mut boards: Vec<Board>) -> (u8, Option<Board>) {
                 return (*num, Some(board.clone()));
             }
         }
+    }
+
+    (0, None)
+}
+
+fn pick_last_winner(numbers: &[u8], mut boards: Vec<Board>) -> (u8, Option<Board>) {
+    let mut winners = Vec::with_capacity(boards.len());
+
+    for num in numbers {
+        let new_boards = boards
+            .into_iter()
+            .filter_map(|mut board| {
+                if board.wins_after(*num) {
+                    winners.push(board);
+                    None
+                } else {
+                    Some(board)
+                }
+            })
+            .collect::<Vec<_>>();
+
+        if new_boards.is_empty() {
+            return (*num, winners.pop());
+        }
+
+        boards = new_boards;
     }
 
     (0, None)
