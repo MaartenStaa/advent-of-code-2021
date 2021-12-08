@@ -17,3 +17,7 @@ version = "0.1.0"
 [[package]]
 name = "day4-giant-squid"
 version = "0.1.0"
+
+[[package]]
+name = "day7-the-treachery-of-whales"
+version = "0.1.0"
