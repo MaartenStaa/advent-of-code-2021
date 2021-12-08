@@ -5,4 +5,5 @@ members = [
     "day3-binary-diagnostic",
     "day4-giant-squid",
     "day7-the-treachery-of-whales",
+    "day8-seven-segment-search",
 ]
