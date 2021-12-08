@@ -1,8 +1,8 @@
 fn main() {
-    println!(
-        "{}",
-        lowest_alignment_cost(parse_input(include_str!("input.txt").trim()))
-    );
+    let input = parse_input(include_str!("input.txt").trim());
+
+    println!("Part 1: {}", lowest_alignment_cost_mean(input.clone()));
+    println!("Part 2: {}", lowest_alignment_cost_range(input));
 }
 
 fn parse_input(input: &str) -> Vec<i32> {
@@ -12,23 +12,43 @@ fn parse_input(input: &str) -> Vec<i32> {
         .collect()
 }
 
-fn lowest_alignment_cost(mut crab_positions: Vec<i32>) -> i32 {
-    crab_positions.sort();
+fn lowest_alignment_cost_mean(mut crab_positions: Vec<i32>) -> i32 {
+    crab_positions.sort_unstable();
 
     let mean = crab_positions[crab_positions.len() / 2];
-    let average_position: i32 =
-        (crab_positions.iter().sum::<i32>() as f32 / crab_positions.len() as f32).round() as i32;
-    dbg!(average_position, mean);
 
     crab_positions.iter().map(|pos| (pos - mean).abs()).sum()
 }
 
+fn lowest_alignment_cost_range(crab_positions: Vec<i32>) -> i32 {
+    let max = crab_positions
+        .iter()
+        .max()
+        .expect("The crab positions vec should not be empty");
+
+    (0..=*max)
+        .map(|target| {
+            crab_positions
+                .iter()
+                .flat_map(|pos| 1..=((pos - target).abs()))
+                .sum()
+        })
+        .min()
+        .unwrap()
+}
+
 #[test]
-fn test() {
+fn test_part1() {
     assert_eq!(
         37,
-        lowest_alignment_cost(parse_input("16,1,2,0,4,2,7,1,2,14"))
+        lowest_alignment_cost_mean(parse_input("16,1,2,0,4,2,7,1,2,14"))
     )
 }
 
-// 0 1 1 2 2 2 4 7 14 16
+#[test]
+fn test_part2() {
+    assert_eq!(
+        168,
+        lowest_alignment_cost_range(parse_input("16,1,2,0,4,2,7,1,2,14"))
+    )
+}
