@@ -25,3 +25,7 @@ version = "0.1.0"
 [[package]]
 name = "day8-seven-segment-search"
 version = "0.1.0"
+
+[[package]]
+name = "day9-smoke-basin"
+version = "0.1.0"

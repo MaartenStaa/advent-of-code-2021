@@ -6,4 +6,5 @@ members = [
     "day4-giant-squid",
     "day7-the-treachery-of-whales",
     "day8-seven-segment-search",
+    "day9-smoke-basin",
 ]
