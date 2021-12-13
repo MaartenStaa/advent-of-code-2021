@@ -7,4 +7,5 @@ members = [
     "day7-the-treachery-of-whales",
     "day8-seven-segment-search",
     "day9-smoke-basin",
+    "day10-syntax-scoring",
 ]
