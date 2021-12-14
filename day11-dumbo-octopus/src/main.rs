@@ -1,10 +1,11 @@
-use std::vec;
-
 fn main() {
+    let mut input = parse_input(include_str!("input.txt"));
+
     println!(
-        "{}",
-        run_simulation(&mut parse_input(include_str!("input.txt")), 100)
+        "Part 1: {}",
+        run_simulation(&mut input.clone(), Some(100)).0
     );
+    println!("Part 2: {:?}", run_simulation(&mut input, None).1);
 }
 
 #[derive(Debug, Clone)]
@@ -74,12 +75,16 @@ fn parse_input(input: &str) -> Grid {
     }
 }
 
-fn run_simulation(grid: &mut Grid, steps: usize) -> usize {
+fn run_simulation(grid: &mut Grid, steps: Option<usize>) -> (usize, Option<usize>) {
     let mut flashes = 0;
     let mut flashed = Vec::new();
+    let mut first_all_flash = None;
     let grid_length = grid.fields.len();
 
-    for _ in 0..steps {
+    for step in match steps {
+        Some(steps) => 1..=steps,
+        None => 1..=usize::MAX,
+    } {
         for index in 0..grid_length {
             let (flashed_count, newly_flashed) = bump(grid, index);
             flashes += flashed_count;
@@ -87,6 +92,11 @@ fn run_simulation(grid: &mut Grid, steps: usize) -> usize {
             if let Some(mut newly_flashed) = newly_flashed {
                 flashed.append(&mut newly_flashed);
             }
+        }
+
+        if steps.is_none() && flashed.len() == grid_length {
+            first_all_flash = Some(step);
+            break;
         }
 
         for (x, y) in flashed.iter() {
@@ -97,7 +107,7 @@ fn run_simulation(grid: &mut Grid, steps: usize) -> usize {
         flashed.clear();
     }
 
-    flashes
+    (flashes, first_all_flash)
 }
 
 fn bump(grid: &mut Grid, index: usize) -> (usize, Option<Vec<(usize, usize)>>) {
@@ -126,10 +136,8 @@ fn bump(grid: &mut Grid, index: usize) -> (usize, Option<Vec<(usize, usize)>>) {
     (flashes, Some(flashed))
 }
 
-#[test]
-fn test_part1() {
-    let mut parsed = parse_input(
-        "5483143223
+#[cfg(test)]
+const TEST_INPUT: &str = "5483143223
 2745854711
 5264556173
 6141336146
@@ -138,9 +146,20 @@ fn test_part1() {
 2176841721
 6882881134
 4846848554
-5283751526",
-    );
+5283751526";
 
-    assert_eq!(204, run_simulation(&mut parsed.clone(), 10));
-    assert_eq!(1656, run_simulation(&mut parsed, 100));
+#[test]
+fn test_part1() {
+    let mut parsed = parse_input(TEST_INPUT);
+
+    assert_eq!(204, run_simulation(&mut parsed.clone(), Some(10)).0);
+    assert_eq!(1656, run_simulation(&mut parsed, Some(100)).0);
+}
+
+#[test]
+fn test_part2() {
+    assert_eq!(
+        Some(195),
+        run_simulation(&mut parse_input(TEST_INPUT), None).1
+    );
 }
