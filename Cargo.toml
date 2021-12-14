@@ -8,4 +8,5 @@ members = [
     "day8-seven-segment-search",
     "day9-smoke-basin",
     "day10-syntax-scoring",
+    "day11-dumbo-octopus",
 ]

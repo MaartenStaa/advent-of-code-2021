@@ -11,6 +11,10 @@ name = "day10-syntax-scoring"
 version = "0.1.0"
 
 [[package]]
+name = "day11-dumbo-octopus"
+version = "0.1.0"
+
+[[package]]
 name = "day2-dive"
 version = "0.1.0"
 
