@@ -9,4 +9,5 @@ members = [
     "day9-smoke-basin",
     "day10-syntax-scoring",
     "day11-dumbo-octopus",
+    "day16-packet-decoder",
 ]
