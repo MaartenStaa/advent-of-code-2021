@@ -4,6 +4,7 @@ members = [
     "day2-dive",
     "day3-binary-diagnostic",
     "day4-giant-squid",
+    "day6-lanternfish",
     "day7-the-treachery-of-whales",
     "day8-seven-segment-search",
     "day9-smoke-basin",
