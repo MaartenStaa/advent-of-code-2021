@@ -12,4 +12,5 @@ members = [
     "day11-dumbo-octopus",
     "day16-packet-decoder",
     "day17-trick-shot",
+    "day21-dirac-dice",
 ]
