@@ -46,6 +46,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "day25-sea-cucumber"
+version = "0.1.0"
+
+[[package]]
 name = "day3-binary-diagnostic"
 version = "0.1.0"
 
