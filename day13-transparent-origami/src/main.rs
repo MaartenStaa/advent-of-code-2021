@@ -7,6 +7,13 @@ fn main() {
     let after_one_fold = execute_fold(&set, &instructions[0]);
 
     println!("Part 1: {}", after_one_fold.len());
+
+    let mut set = set;
+    for instruction in instructions {
+        set = execute_fold(&set, &instruction);
+    }
+
+    println!("{}", as_text(&set));
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -71,6 +78,23 @@ fn execute_fold(
         .collect()
 }
 
+fn as_text(set: &HashSet<(usize, usize)>) -> String {
+    let (width, height) = set.iter().fold((0, 0), |(width, height), &(x, y)| {
+        (width.max(x + 1), height.max(y + 1))
+    });
+
+    let mut result = Vec::from_iter(std::iter::repeat('.').take(width * height));
+    for &(x, y) in set {
+        result[y * width + x] = '#';
+    }
+
+    result
+        .chunks(width)
+        .map(|line| String::from_iter(line.iter()))
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{execute_fold, FoldInstruction};
@@ -111,5 +135,22 @@ fold along x=5";
         let (set, instructions) = crate::parse(TEST_INPUT);
 
         assert_eq!(17, execute_fold(&set, &instructions[0]).len());
+    }
+
+    #[test]
+    fn as_text() {
+        let (mut set, instructions) = crate::parse(TEST_INPUT);
+        for instruction in instructions {
+            set = execute_fold(&set, &instruction);
+        }
+
+        assert_eq!(
+            "#####
+#...#
+#...#
+#...#
+#####",
+            crate::as_text(&set)
+        );
     }
 }
