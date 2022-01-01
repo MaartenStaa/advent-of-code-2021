@@ -16,8 +16,8 @@ fn main() {
 struct Point(isize, isize);
 
 impl Point {
-    fn len(&self) -> f32 {
-        ((self.0 * self.0 + self.1 * self.1) as f32).sqrt()
+    fn len(&self) -> isize {
+        self.0.abs().max(self.1.abs())
     }
 }
 
@@ -37,25 +37,19 @@ impl Sub for Point {
     }
 }
 
-impl Div<f32> for Point {
+impl Div<isize> for Point {
     type Output = Point;
 
-    fn div(self, rhs: f32) -> Self::Output {
-        Point(
-            ((self.0 as f32) / rhs) as isize,
-            ((self.1 as f32) / rhs) as isize,
-        )
+    fn div(self, rhs: isize) -> Self::Output {
+        Point(self.0 / rhs, self.1 / rhs)
     }
 }
 
-impl Mul<f32> for Point {
+impl Mul<isize> for Point {
     type Output = Point;
 
-    fn mul(self, rhs: f32) -> Self::Output {
-        Point(
-            ((self.0 as f32) * rhs) as isize,
-            ((self.1 as f32) * rhs) as isize,
-        )
+    fn mul(self, rhs: isize) -> Self::Output {
+        Point(self.0 * rhs, self.1 * rhs)
     }
 }
 
@@ -73,11 +67,15 @@ impl Line {
 
     fn points(&self) -> Vec<Point> {
         let delta = self.1 - self.0;
-        let distance = delta.len().ceil() as usize;
-        let delta_step = delta / distance as f32;
+        let distance = delta.len();
+        if distance == 0 {
+            return vec![self.0];
+        }
+
+        let delta_step = delta / distance;
 
         (0..=distance)
-            .map(|step| self.0 + delta_step * step as f32)
+            .map(|step| self.0 + delta_step * step)
             .collect()
     }
 }
@@ -148,4 +146,34 @@ fn test_part1() {
             .collect::<Vec<_>>(),
     );
     assert_eq!(5, grid.iter().filter(|value| **value >= 2).count());
+}
+
+#[test]
+fn test_covered_points() {
+    // Horizontal
+    assert_eq!(
+        vec![Point(15, 2), Point(16, 2), Point(17, 2), Point(18, 2)],
+        Line(Point(15, 2), Point(18, 2)).points()
+    );
+
+    // Vertical
+    assert_eq!(
+        vec![Point(1, 2), Point(1, 3), Point(1, 4)],
+        Line(Point(1, 2), Point(1, 4)).points()
+    );
+
+    // Vertical going up
+    assert_eq!(
+        vec![Point(1, 4), Point(1, 3), Point(1, 2)],
+        Line(Point(1, 4), Point(1, 2)).points()
+    );
+
+    // Diagonal
+    assert_eq!(
+        vec![Point(1, 1), Point(2, 2), Point(3, 3), Point(4, 4)],
+        Line(Point(1, 1), Point(4, 4)).points()
+    );
+
+    // One point
+    assert_eq!(vec![Point(1, 1)], Line(Point(1, 1), Point(1, 1)).points());
 }
