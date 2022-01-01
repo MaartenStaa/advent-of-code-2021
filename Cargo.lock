@@ -24,6 +24,10 @@ name = "day11-dumbo-octopus"
 version = "0.1.0"
 
 [[package]]
+name = "day13-transparent-origami"
+version = "0.1.0"
+
+[[package]]
 name = "day16-packet-decoder"
 version = "0.1.0"
 

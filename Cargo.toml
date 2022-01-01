@@ -11,6 +11,7 @@ members = [
     "day9-smoke-basin",
     "day10-syntax-scoring",
     "day11-dumbo-octopus",
+    "day13-transparent-origami",
     "day16-packet-decoder",
     "day17-trick-shot",
     "day21-dirac-dice",
