@@ -58,6 +58,10 @@ name = "day4-giant-squid"
 version = "0.1.0"
 
 [[package]]
+name = "day5-hydrothermal-venture"
+version = "0.1.0"
+
+[[package]]
 name = "day6-lanternfish"
 version = "0.1.0"
 
