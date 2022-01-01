@@ -5,11 +5,21 @@ fn main() {
 
     let (grid, _) = fill_grid(
         &lines
-            .iter()
+            .clone()
+            .into_iter()
             .filter(|line| line.is_horizontal() || line.is_vertical())
             .collect::<Vec<_>>(),
     );
-    println!("{}", grid.iter().filter(|value| **value >= 2).count());
+    println!(
+        "Part 1: {}",
+        grid.iter().filter(|value| **value >= 2).count()
+    );
+
+    let (grid, _) = fill_grid(&lines);
+    println!(
+        "Part 2: {}",
+        grid.iter().filter(|value| **value >= 2).count()
+    );
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -53,7 +63,7 @@ impl Mul<isize> for Point {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct Line(Point, Point);
 
 impl Line {
@@ -100,7 +110,7 @@ fn parse(input: &str) -> Vec<Line> {
         .collect()
 }
 
-fn fill_grid(lines: &[&Line]) -> (Vec<usize>, usize) {
+fn fill_grid(lines: &[Line]) -> (Vec<usize>, usize) {
     let width = lines
         .iter()
         .flat_map(|line| [line.0 .0, line.1 .0])
@@ -141,7 +151,7 @@ fn test_part1() {
 
     let (grid, _) = fill_grid(
         &lines
-            .iter()
+            .into_iter()
             .filter(|line| line.is_horizontal() || line.is_vertical())
             .collect::<Vec<_>>(),
     );
@@ -176,4 +186,23 @@ fn test_covered_points() {
 
     // One point
     assert_eq!(vec![Point(1, 1)], Line(Point(1, 1), Point(1, 1)).points());
+}
+
+#[test]
+fn test_part2() {
+    let lines = parse(
+        "0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2",
+    );
+
+    let (grid, _) = fill_grid(&lines);
+    assert_eq!(12, grid.iter().filter(|value| **value >= 2).count());
 }
